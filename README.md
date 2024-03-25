@@ -3,9 +3,9 @@
 
 Chrome extension about some features to citcap/basedvc otc tables like filter by offertype/chain, order by allocation/price/multiplier/date
 
-# Build
-
-`npm run build`
+# Add to chrome extensions
+- Download the zip file from the latest release (https://github.com/szabo-tamas-intland/citcap-tweaker/releases)
+- Add the extension to chrome (https://webkul.com/blog/how-to-install-the-unpacked-extension-in-chrome/)
 
 # Video, screenshot
 
