@@ -1,14 +1,34 @@
 {
-	"name": "Orange It Up!",
-	"description": "This extension is created for changing the background color of the page orange.",
-	"version": "1.0",
-	"manifest_version": 3,
-	"action": {},
-	"permissions": [
-		"activeTab",
-		"scripting"
-	],
-	"background": {
-		"service_worker": "background.js"
-	}
+  "name": "Citcap/Basedvc tweaker",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/icon.png"
+  },
+  "permissions": ["webRequest"],
+  "host_permissions": [
+    "https://citizencapital.fund/*",
+    "https://basedvc.fund/*"
+  ],
+  "background": {
+    "service_worker": "background.ts.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": ["otcContent.ts.js"],
+      "css": ["style.css"],
+      "matches": [
+        "https://citizencapital.fund/app/otc*",
+        "https://basedvc.fund/app/otc*"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["templates.html", "style.css"],
+      "matches": ["https://citizencapital.fund/*", "https://basedvc.fund/*"]
+    }
+  ]
 }
