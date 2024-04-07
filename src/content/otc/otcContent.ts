@@ -1,7 +1,7 @@
-import { MultiplierCellValueParser } from "./cellValueParser";
+import { MultiplierCellValueParser } from "../utils/cellValueParser";
 import { chainFilterValues, offerFilterValues } from "./consts";
-import { getTemplates } from "./getTemplates";
-import { MESSAGE_KEYS } from "./messages";
+import { getTemplates } from "../utils/getTemplates";
+import { MESSAGE_KEYS } from "../../types/messages";
 import { renderFilters } from "./renderFilters";
 import {
   multiplierIndex,
@@ -28,7 +28,6 @@ chrome.runtime.onMessage.addListener(async function (request) {
 
 async function tweakOTCOffersTable(templates: { [key: string]: Element }) {
   const table = getTable();
-  console.log(table);
   const header = getHeader();
   const rows = getRows(table);
   await tweakOTCTable(templates, header, rows, 1);
@@ -81,6 +80,9 @@ async function tweakOTCTable(
 
 function getChain(row: HTMLTableRowElement, chainSvgIndex: number) {
   const svg = row.cells[4].querySelectorAll("span > svg");
+  if (!svg[chainSvgIndex]) {
+    return "";
+  }
   const path = svg[chainSvgIndex].querySelectorAll("path");
 
   if (path.length === 1) {
@@ -117,3 +119,5 @@ function getRows(table: HTMLTableElement) {
       ?.querySelectorAll("tr") as NodeListOf<HTMLTableRowElement>),
   ];
 }
+
+export {};

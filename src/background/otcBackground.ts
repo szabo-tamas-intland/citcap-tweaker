@@ -1,4 +1,4 @@
-import { MESSAGE_KEYS } from "./messages";
+import { MESSAGE_KEYS } from "../types/messages";
 
 chrome.webRequest.onCompleted.addListener(
   async (...args) => {

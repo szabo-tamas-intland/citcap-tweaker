@@ -12,13 +12,13 @@
     "https://basedvc.fund/*"
   ],
   "background": {
-    "service_worker": "background.ts.js",
+    "service_worker": "background.js",
     "type": "module"
   },
   "content_scripts": [
     {
-      "js": ["otcContent.ts.js"],
-      "css": ["style.css"],
+      "js": ["content.js"],
+      "css": ["style.min.css"],
       "matches": [
         "https://citizencapital.fund/app/otc*",
         "https://basedvc.fund/app/otc*"

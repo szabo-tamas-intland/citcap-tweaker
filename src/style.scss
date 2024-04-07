@@ -1,0 +1,97 @@
+.filter-content {
+  padding: 0 8px;
+  color: white;
+  font-size: 16px;
+  display: flex;
+  gap: 16px;
+  margin-left: 16px;
+
+  .filter-options {
+    display: flex;
+    gap: 8px;
+
+    & > label {
+      display: inline-flex;
+      gap: 4px;
+    }
+  }
+}
+
+.clear {
+  clear: both;
+}
+
+.only-buy-offers tbody tr.sell {
+  display: none;
+}
+
+.only-sell-offers tbody tr.buy {
+  display: none;
+}
+
+.order-arrow-down,
+.order-arrow-up {
+  cursor: pointer;
+}
+
+.only-bnb-chain tbody {
+  tr.poly,
+  tr.eth {
+    display: none;
+  }
+}
+
+.only-eth-chain tbody {
+  tr.poly,
+  tr.bnb {
+    display: none;
+  }
+}
+
+.only-polygon-chain tbody {
+  tr.bnb,
+  tr.eth {
+    display: none;
+  }
+}
+
+.order-arrows-content {
+  display: inline-flex;
+  margin-left: 4px;
+  font-size: 18px;
+
+  .order-arrow-up,
+  .order-arrow-down {
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+table.flex-headers th {
+  display: flex;
+  gap: 8xp;
+}
+
+.too-low-multiplier {
+  opacity: 0.2;
+}
+
+$orderArrowClassNames: "price", "date", "currency", "multiplier";
+
+@each $orderArrowClassName in $orderArrowClassNames {
+  $color: rgb(177 227 101);
+  table.#{$orderArrowClassName} {
+    &.up {
+      .order-arrows-content.#{$orderArrowClassName} .order-arrow-up {
+        opacity: 1;
+      }
+    }
+    &.down {
+      .order-arrows-content.#{$orderArrowClassName} .order-arrow-down {
+        opacity: 1;
+      }
+    }
+  }
+}

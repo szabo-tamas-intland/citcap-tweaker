@@ -16,7 +16,6 @@ export class MultiplierCellValueParser extends CellValueParser<number> {
 
 export class DateCellValueParser extends CellValueParser<number> {
   parse(cell: HTMLTableCellElement): number {
-    console.log(cell.innerText, new Date(cell.innerText).getTime());
     return new Date(cell.innerText).getTime();
   }
 }

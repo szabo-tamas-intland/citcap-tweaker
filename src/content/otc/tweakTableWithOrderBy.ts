@@ -3,7 +3,7 @@ import {
   CurrencyCellValueParser,
   DateCellValueParser,
   MultiplierCellValueParser,
-} from "./cellValueParser";
+} from "../utils/cellValueParser";
 
 const currencyCellValueParser = new CurrencyCellValueParser();
 const multiplierCellValueParser = new MultiplierCellValueParser();
@@ -16,6 +16,13 @@ const dateIndex = 5;
 
 function getHeaderColumns(table: HTMLTableElement) {
   return table.querySelectorAll("thead th");
+}
+
+enum ArrowFilterClassNames {
+  date = "date",
+  price = "price",
+  currency = "currency",
+  multiplier = "multiplier",
 }
 
 export function tweakHistoryTableWithOrderBy(
@@ -33,10 +40,12 @@ export function tweakHistoryTableWithOrderBy(
     onSort
   );
   const dateArrows = getOrderArrowsElement(
+    table,
     orderArrowsTemplate,
     rows,
     dateIndex,
     dateCellValueParser,
+    ArrowFilterClassNames.date,
     onSort
   );
   headerColumns[dateIndex].appendChild(dateArrows);
@@ -66,24 +75,30 @@ function tweakTableWithOrderBy(
   onSort: (rows: HTMLTableRowElement[]) => void
 ) {
   const allocationArrows = getOrderArrowsElement(
+    table,
     orderArrowsTemplate,
     rows,
     allocationColumnIndex,
     currencyCellValueParser,
+    ArrowFilterClassNames.price,
     onSort
   );
   const priceArrows = getOrderArrowsElement(
+    table,
     orderArrowsTemplate,
     rows,
     priceColumnIndex,
     currencyCellValueParser,
+    ArrowFilterClassNames.currency,
     onSort
   );
   const multiplierArrows = getOrderArrowsElement(
+    table,
     orderArrowsTemplate,
     rows,
     multiplierIndex,
     multiplierCellValueParser,
+    ArrowFilterClassNames.multiplier,
     onSort
   );
 
@@ -104,18 +119,32 @@ const getOrderArrows = (orderArrowsTemplate: Element) => {
   return parser.parseFromString(orderArrowsTemplate.innerHTML, "text/html");
 };
 
-const getOrderArrowsElement = <T>(
+const getOrderArrowsElement = (
+  table: HTMLTableElement,
   orderArrowsTemplate: Element,
   rows: HTMLTableRowElement[],
   columnIndex: number,
   parser: CellValueParser<number>,
+  className: string,
   onSort: (rows: HTMLTableRowElement[]) => void
 ) => {
   const orderArrows = getOrderArrows(orderArrowsTemplate);
+  const body = orderArrows.body.querySelector(
+    ".order-arrows-content"
+  ) as Element;
+  body.classList.add(className);
   const down = orderArrows.querySelector(".order-arrow-down");
   const up = orderArrows.querySelector(".order-arrow-up");
 
+  const removeClassNames = () => {
+    Object.values(ArrowFilterClassNames).forEach((_className) =>
+      table.classList.remove(_className, "down", "up")
+    );
+  };
+
   up?.addEventListener("click", function () {
+    removeClassNames();
+    table.classList.add(className, "up");
     rows.sort((row1, row2) => {
       return (
         parser.parse(row1.cells[columnIndex]) -
@@ -126,6 +155,8 @@ const getOrderArrowsElement = <T>(
   });
 
   down?.addEventListener("click", function () {
+    removeClassNames();
+    table.classList.add(className, "down");
     rows.sort((row1, row2) => {
       return (
         parser.parse(row2.cells[columnIndex]) -
@@ -135,5 +166,5 @@ const getOrderArrowsElement = <T>(
     onSort(rows);
   });
 
-  return orderArrows.body.querySelector(".order-arrows-content") as Element;
+  return body;
 };
